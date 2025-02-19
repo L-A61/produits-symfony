@@ -1,28 +1,62 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Liste des produits{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+		const toastLiveExample = document.getElementById('liveToast')
+		const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+		toastBootstrap.show()
+	  </script>
+{% endblock %}
+
+
 {% block body %}
-    <table>
-        <thead>
-            <tr>
-                <th>Categorie</th>
-                <th>Nom</th>
-                <th>Prix</th>
-                <th>Promotion</th>
-                <th>Remise</th>
-            </tr
-        </thead>
 
-        <tbody>
-            {% for product in products %}
-                <tr>
-                    <td>{{ product.category.name }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.promotion }}</td>
-                    <td>{{ product.discount }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% for message in app.flashes('notice') %}
 
+	<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header">
+		  <strong class="me-auto">Notification</strong>
+		  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body">
+		  {{ message }}
+		</div>
+	  </div>
+	  
+	</div>
+{% endfor %}
+
+
+<a href="{{ path('app_products_add') }}" class="btn btn-primary">Ajouter un produit</a>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Nom</th>
+			<th>Prix</th>
+			<th>Promotion</th>
+			<th>Remise</th>
+			<th>Catégorie</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for product in products %} 
+			<tr>
+				<td>{{ product.name }}</td>
+				<td>{{ product.price }}</td>
+				<td>{{ product.promotion }}</td>
+				<td>{{ product.discount }}</td>
+				<td>{{ product.category.name }}</td>
+				<td>
+					<a href="{{ path('app_products_update',{id:product.id}) }}" class="btn btn-success">Modifier</a>
+					<a href="{{ path('app_products_delete',{id:product.id}) }}" class="btn btn-danger">Supprimer</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+	
 {% endblock %}
