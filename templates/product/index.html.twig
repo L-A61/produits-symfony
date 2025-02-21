@@ -30,7 +30,9 @@
 {% endfor %}
 
 
-<a href="{{ path('app_products_add') }}" class="btn btn-primary">Ajouter un produit</a>
+{% if is_granted('ROLE_ADMIN') %}
+	<a href="{{ path('app_products_add') }}" class="btn btn-primary">Ajouter un produit</a>
+{% endif %}
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -50,10 +52,12 @@
 				<td>{{ product.promotion }}</td>
 				<td>{{ product.discount }}</td>
 				<td>{{ product.category.name }}</td>
-				<td>
-					<a href="{{ path('app_products_update',{id:product.id}) }}" class="btn btn-success">Modifier</a>
-					<a href="{{ path('app_products_delete',{id:product.id}) }}" class="btn btn-danger">Supprimer</a>
-				</td>
+				{% if is_granted('ROLE_ADMIN') %}
+					<td>
+						<a href="{{ path('app_products_update',{id:product.id}) }}" class="btn btn-success">Modifier</a>
+						<a href="{{ path('app_products_delete',{id:product.id}) }}" class="btn btn-danger">Supprimer</a>
+					</td>
+				{% endif %}
 			</tr>
 		{% endfor %}
 	</tbody>
